@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <!-- رابط ملف القائمة الجانبية -->
+    <link rel="stylesheet" href="sidebar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التحليل العددي مع تطبيقات MATLAB</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --matlab: #0076a5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            direction: rtl;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .matlab-badge {
+            display: inline-block;
+            background-color: var(--matlab);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            position: relative;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 18px 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border-bottom: 4px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tab:hover {
+            background-color: var(--light);
+            transform: translateY(-2px);
+        }
+        
+        .tab.active {
+            background-color: var(--light);
+            border-bottom: 4px solid var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .page {
+            display: none;
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: var(--secondary);
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin: 30px 0 20px;
+            padding-right: 15px;
+            border-right: 4px solid var(--secondary);
+        }
+        
+        h4 {
+            color: var(--success);
+            margin: 25px 0 15px;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        
+        .math {
+            direction: ltr;
+            text-align: left;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            overflow-x: auto;
+            border-left: 5px solid var(--secondary);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .example {
+            background-color: #f0f7ff;
+            border: 1px solid #d0e3ff;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        
+        .example::before {
+            content: 'مثال';
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .example h4 {
+            color: var(--accent);
+            margin-top: 0;
+        }
+        
+        .matlab-code {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .matlab-code::before {
+            content: 'كود MATLAB';
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: var(--matlab);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #f8f8f2;
+        }
+        
+        .copy-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .matlab-keyword {
+            color: #ff79c6;
+        }
+        
+        .matlab-string {
+            color: #f1fa8c;
+        }
+        
+        .matlab-comment {
+            color: #6272a4;
+        }
+        
+        .matlab-function {
+            color: #50fa7b;
+        }
+        
+        .output {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            direction: ltr;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .output::before {
+            content: 'المخرجات';
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--success);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 15px 20px;
+            text-align: right;
+            border: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .comparison {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .comparison-box {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-top: 5px solid var(--secondary);
+            transition: transform 0.3s;
+        }
+        
+        .comparison-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .comparison-box h4 {
+            color: var(--primary);
+            margin-top: 0;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        
+        .algorithm {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #ecf0f1;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                text-align: center;
+                justify-content: center;
+            }
+            
+            .comparison {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div data-sidebar="load"></div>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> التحليل العددي مع تطبيقات MATLAB</h1>
+            <p class="subtitle">شرح شامل للطرق العددية مع تنفيذها العملي باستخدام MATLAB</p>
+            <div class="matlab-badge">
+                <i class="fas fa-code"></i> يتضمن أمثلة عملية بأكواد MATLAB
+            </div>
+        </header>
+        
+        <div class="nav-tabs">
+            <div class="tab active" data-target="page1">
+                <i class="fas fa-chart-line"></i> الاستكمال الحدودي
+            </div>
+            <div class="tab" data-target="page2">
+                <i class="fas fa-root-alt"></i> إيجاد الجذور
+            </div>
+            <div class="tab" data-target="page3">
+                <i class="fas fa-integral"></i> التكامل العددي
+            </div>
+        </div>
+        
+        <!-- الصفحة الأولى: الاستكمال الحدودي -->
+        <div id="page1" class="page active">
+            <h2><i class="fas fa-chart-line"></i> الاستكمال الحدودي (Polynomial Interpolation)</h2>
+            <p>الاستكمال الحدودي هو أسلوب رياضي يُستخدم لتقدير القيم بين نقاط معطاة. يتم بناء متعددة حدود تمر عبر جميع النقاط المعطاة \((x_i, f_i)\) حيث \(i = 0, 1, \ldots, n\).</p>
+            
+            <h3>1. طريقة لاغرانج (Lagrange Interpolation)</h3>
+            <p>تعتمد طريقة لاغرانج على بناء متعددة حدود من الدرجة \(n\) تمر بجميع النقاط المعطاة.</p>
+            
+            <div class="math">
+                \[ P(x) = \sum_{k=0}^{n} f_k \cdot L_k(x) \]
+            </div>
+            
+            <p>حيث \(L_k(x)\) هي متعددات حدود لاغرانج الأساسية وتعطى بالعلاقة:</p>
+            
+            <div class="math">
+                \[ L_k(x) = \prod_{\substack{j=0 \\ j \ne k}}^{n} \frac{x - x_j}{x_k - x_j} \]
+            </div>
+
+            <div class="matlab-code">
+                <div class="code-header">
+                    <span>دالة لاغرانج في MATLAB</span>
+                    <button class="copy-btn" onclick="copyCode(this)">نسخ الكود</button>
+                </div>
+<pre><code><span class="matlab-keyword">function</span> p = lagrange(x, f, v)
+<span class="matlab-comment">% دالة لاغرانج للاستكمال الحدودي</span>
+<span class="matlab-comment">% x: نقاط x المعطاة</span>
+<span class="matlab-comment">% f: قيم الدالة عند نقاط x</span>
+<span class="matlab-comment">% v: النقاط المراد استكمال قيم الدالة عندها (اختياري)</span>
+
+n = length(x);
+syms t;
+p = 0;
+
+<span class="matlab-keyword">for</span> i = 1:n
+    L = 1;
+    <span class="matlab-keyword">for</span> j = 1:n
+        <span class="matlab-keyword">if</span> i ~= j
+            L = L * (t - x(j)) / (x(i) - x(j));
+        <span class="matlab-keyword">end</span>
+    <span class="matlab-keyword">end</span>
+    p = p + L * f(i);
+<span class="matlab-keyword">end</span>
+
+p = expand(p);
+
+<span class="matlab-keyword">if</span> nargin > 2
+    t = v;
+    p = eval(p);
+<span class="matlab-keyword">end</span>
+
+<span class="matlab-keyword">end</span></code></pre>
+            </div>
+            
+            <div class="example">
+                <h4>مثال توضيحي:</h4>
+                <p>لنفترض الدالة \(f(x) = x^2 - 3x + 2\) والنقاط \(x_0 = 0, x_1 = 1, x_2 = 2\).</p>
+                
+                <div class="matlab-code">
+                    <div class="code-header">
+                        <span>تنفيذ المثال في MATLAB</span>
+                        <button class="copy-btn" onclick="copyCode(this)">نسخ الكود</button>
+                    </div>
+<pre><code><span class="matlab-comment">% تعريف النقاط المعطاة</span>
+x = [0, 1, 2];
+f = [2, 0, 0];
+
+<span class="matlab-comment">% استدعاء دالة لاغرانج</span>
+p = lagrange(x, f);
+disp(<span class="matlab-string">'كثير حدود لاغرانج:'</span>);
+disp(p);
+
+<span class="matlab-comment">% تقييم كثير الحدود عند نقطة محددة</span>
+value = lagrange(x, f, 0.5);
+disp([<span class="matlab-string">'القيمة عند x=0.5: '</span>, num2str(value)]);</code></pre>
+                </div>
+                
+                <div class="output">
+                    كثير حدود لاغرانج:
+                    t^2 - 3*t + 2
+                    القيمة عند x=0.5: 0.7500
+                </div>
+            </div>
+            
+            <h3>2. طريقة نيوتن (Newton Interpolation)</h3>
+            <p>تستخدم طريقة نيوتن الفروق المقسومة لبناء متعددة الحدود الاستكمالية.</p>
+            
+            <div class="math">
+                \[
+                \begin{aligned}
+                P(x) &= f[x_0] \\
+                &\quad + f[x_0, x_1](x - x_0) \\
+                &\quad + f[x_0, x_1, x_2](x - x_0)(x - x_1) \\
+                &\quad + \cdots \\
+                &\quad + f[x_0, x_1, \ldots, x_n](x - x_0)(x - x_1) \cdots (x - x_{n-1})
+                \end{aligned}
+                \]
+            </div>
+
+            <div class="matlab-code">
+                <div class="code-header">
+                    <span>دالة نيوتن للفروق المقسومة في MATLAB</span>
+                    <button class="copy-btn" onclick="copyCode(this)">نسخ الكود</button>
+                </div>
+<pre><code><span class="matlab-keyword">function</span> p = newton_interpolation(x, f, v)
+<span class="matlab-comment">% دالة نيوتن للاستكمال باستخدام الفروق المقسومة</span>
+<span class="matlab-comment">% x: نقاط x المعطاة</span>
+<span class="matlab-comment">% f: قيم الدالة عند نقاط x</span>
+<span class="matlab-comment">% v: النقاط المراد استكمال قيم الدالة عندها (اختياري)</span>
+
+n = length(x);
+<span class="matlab-comment">% إنشاء جدول الفروق المقسومة</span>
+F = zeros(n, n);
+F(:,1) = f';
+
+<span class="matlab-keyword">for</span> j = 2:n
+    <span class="matlab-keyword">for</span> i = 1:n-j+1
+        F(i,j) = (F(i+1,j-1) - F(i,j-1)) / (x(i+j-1) - x(i));
+    <span class="matlab-keyword">end</span>
+<span class="matlab-keyword">end</span>
+
+syms t;
+p = F(1,1);
+product = 1;
+
+<span class="matlab-keyword">for</span> i = 1:n-1
+    product = product * (t - x(i));
+    p = p + F(1,i+1) * product;
+<span class="matlab-keyword">end</span>
+
+p = expand(p);
+
+<span class="matlab-keyword">if</span> nargin > 2
+    t = v;
+    p = eval(p);
+<span class="matlab-keyword">end</span>
+
+<span class="matlab-keyword">end</span></code></pre>
+            </div>
+            
+            <div class="example">
+                <h4>مثال توضيحي:</h4>
+                <p>نفس الدالة السابقة \(f(x) = x^2 - 3x + 2\) والنقاط \(x_0 = 0, x_1 = 1, x_2 = 2\).</p>
+                
+                <div class="matlab-code">
+                    <div class="code-header">
+                        <span>تنفيذ المثال في MATLAB</span>
+                        <button class="copy-btn" onclick="copyCode(this)">نسخ الكود</button>
+                    </div>
+<pre><code><span class="matlab-comment">% تعريف النقاط المعطاة</span>
+x = [0, 1, 2];
+f = [2, 0, 0];
+
+<span class="matlab-comment">% استدعاء دالة نيوتن</span>
+p = newton_interpolation(x, f);
+disp(<span class="matlab-string">'كثير حدود نيوتن:'</span>);
+disp(p);
+
+<span class="matlab-comment">% تقييم كثير الحدود عند نقطة محددة</span>
+value = newton_interpolation(x, f, 1.5);
+disp([<span class="matlab-string">'القيمة عند x=1.5: '</span>, num2str(value)]);</code></pre>
+                </div>
+                
+                <div class="output">
+                    كثير حدود نيوتن:
+                    t^2 - 3*t + 2
+                    القيمة عند x=1.5: -0.2500
+                </div>
+            </div>
+        </div>
+        
+        <!-- الصفحة الثانية: إيجاد الجذور -->
+        <div id="page2" class="page">
+            <h2><i class="fas fa-root-alt"></i> طرق إيجاد جذور المعادلات غير الخطية</h2>
+            <p>المعادلات غير الخطية هي معادلات تحتوي على حدود ذات قوى و/أو حاصل ضرب متغيرات. في معظم الحالات، لا يمكن حل هذه المعادلات باستخدام الطرق الجبرية البسيطة وتتطلب تقنيات عددية أو حلول تقريبية.</p>
+            
+            <h3>1. طريقة التنصيف (Bisection Method)</h3>
+            <p>تعتمد طريقة التنصيف على مبرهنة بولزانو: إذا كانت الدالة \(f\) متصلة على الفترة \([a,b]\) و \(f(a)\) و \(f(b)\) بإشارتين مختلفتين، فإن هناك جذرًا واحدًا على الأقل في \((a,b)\).</p>
+
+            <div class="matlab-code">
+                <div class="code-header">
+                    <span>دالة طريقة التنصيف في MATLAB</span>
+                    <button class="copy-btn" onclick="copyCode(this)">نسخ الكود</button>
+                </div>
+<pre><code><span class="matlab-keyword">function</span> root = bisection(f, a, b, tol, max_iter)
+<span class="matlab-comment">% طريقة التنصيف لإيجاد جذر المعادلة f(x) = 0</span>
+<span class="matlab-comment">% f: الدالة المراد إيجاد جذرها</span>
+<span class="matlab-comment">% a, b: حدود الفترة [a, b]</span>
+<span class="matlab-comment">% tol: مقدار التحمل (الدقة)</span>
+<span class="matlab-comment">% max_iter: الحد الأقصى لعدد التكرارات</span>
+
+<span class="matlab-keyword">if</span> f(a) * f(b) >= 0
+    error(<span class="matlab-string">'يجب أن تكون f(a) و f(b) بإشارتين مختلفتين'</span>);
+<span class="matlab-keyword">end</span>
+
+iter = 0;
+<span class="matlab-keyword">while</span> (b - a) / 2 > tol && iter < max_iter
+    c = (a + b) / 2;
+    fc = f(c);
+    
+    <span class="matlab-keyword">if</span> fc == 0
+        <span class="matlab-keyword">break</span>;
+    <span class="matlab-keyword">end</span>
+    
+    <span class="matlab-keyword">if</span> f(a) * fc < 0
+        b = c;
+    <span class="matlab-keyword">else</span>
+        a = c;
+    <span class="matlab-keyword">end</span>
+    
+    iter = iter + 1;
+<span class="matlab-keyword">end</span>
+
+root = (a + b) / 2;
+fprintf(<span class="matlab-string">'تم إيجاد الجذر بعد %d تكرارات\n'</span>, iter);
+
+<span class="matlab-keyword">end</span></code></pre>
+            </div>
+            
+            <div class="example">
+                <h4>مثال توضيحي:</h4>
+                <p>لحل المعادلة \(f(x) = x e^x - \pi = 0\) في الفترة \([0, 2]\) بدقة \(0.0001\):</p>
+                
+                <div class="matlab-code">
+                    <div class="code-header">
+                        <span>تنفيذ المثال في MATLAB</span>
+                        <button class="copy-btn" onclick="copyCode(this)">نسخ الكود</button>
+                    </div>
+<pre><code><span class="matlab-comment">% تعريف الدالة</span>
+f = @(x) x .* exp(x) - pi;
+
+<span class="matlab-comment">% تطبيق طريقة التنصيف</span>
+root = bisection(f, 0, 2, 1e-4, 100);
+disp([<span class="matlab-string">'الجذر التقريبي: '</span>, num2str(root)]);
+
+<span class="matlab-comment">% التحقق من النتيجة</span>
+f_value = f(root);
+disp([<span class="matlab-string">'قيمة الدالة عند الجذر: '</span>, num2str(f_value)]);</code></pre>
+                </div>
+                
+                <div class="output">
+                    تم إيجاد الجذر بعد 14 تكرارات
+                    الجذر التقريبي: 1.0737
+                    قيمة الدالة عند الجذر: -1.2257e-05
+                </div>
+            </div>
+            
+            <h3>2. طريقة نيوتن-رافسون (Newton-Raphson Method)</h3>
+            <p>هي طريقة تكرارية سريعة التقارب (تقارب تربيعي) لإيجاد جذور المعادلات.</p>
+            
+            <div class="math">
+                \[ x_{i+1} = x_i - \frac{f(x_i)}{f'(x_i)} \]
+            </div>
+
+            <div class="matlab-code">
+                <div class="code-header">
+                    <span>دالة نيوتن-رافسون في MATLAB</span>
+                    <button class="copy-btn" onclick="copyCode(this)">نسخ الكود</button>
+                </div>
+<pre><code><span class="matlab-keyword">function</span> [root, iter] = newton_raphson(f, df, x0, tol, max_iter)
+<span class="matlab-comment">% طريقة نيوتن-رافسون لإيجاد جذر المعادلة f(x) = 0</span>
+<span class="matlab-comment">% f: الدالة المراد إيجاد جذرها</span>
+<span class="matlab-comment">% df: مشتقة الدالة f</span>
+<span class="matlab-comment">% x0: التخمين الأولي</span>
+<span class="matlab-comment">% tol: مقدار التحمل (الدقة)</span>
+<span class="matlab-comment">% max_iter: الحد الأقصى لعدد التكرارات</span>
+
+iter = 0;
+x = x0;
+
+<span class="matlab-keyword">while</span> iter < max_iter
+    fx = f(x);
+    dfx = df(x);
+    
+    <span class="matlab-keyword">if</span> abs(dfx) < eps
+        error(<span class="matlab-string">'المشتقة قريبة من الصفر، الطريقة قد لا تتقارب'</span>);
+    <span class="matlab-keyword">end</span>
+    
+    x_new = x - fx / dfx;
+    
+    <span class="matlab-keyword">if</span> abs(x_new - x) < tol
+        <span class="matlab-keyword">break</span>;
+    <span class="matlab-keyword">end</span>
+    
+    x = x_new;
+    iter = iter + 1;
+<span class="matlab-keyword">end</span>
+
+root = x_new;
+
+<span class="matlab-keyword">if</span> iter == max_iter
+    warning(<span class="matlab-string">'تم الوصول إلى الحد الأقصى لعدد التكرارات'</span>);
+<span class="matlab-keyword">end</span>
+
+<span class="matlab-keyword">end</span></code></pre>
+            </div>
+            
+            <div class="example">
+                <h4>مثال توضيحي:</h4>
+                <p>لحل المعادلة \(f(x) = e^x - \pi x = 0\) باستخدام طريقة نيوتن-رافسون:</p>
+                
+                <div class="matlab-code">
+                    <div class="code-header">
+                        <span>تنفيذ المثال في MATLAB</span>
+                        <button class="copy-btn" onclick="copyCode(this)">نسخ الكود</button>
+                    </div>
+<pre><code><span class="matlab-comment">% تعريف الدالة ومشتقتها</span>
+f = @(x) exp(x) - pi * x;
+df = @(x) exp(x) - pi;
+
+<span class="matlab-comment">% تطبيق طريقة نيوتن-رافسون</span>
+x0 = 0.5; <span class="matlab-comment">% تخمين أولي</span>
+[root, iter] = newton_raphson(f, df, x0, 1e-6, 100);
+
+disp([<span class="matlab-string">'الجذر التقريبي: '</span>, num2str(root)]);
+disp([<span class="matlab-string">'عدد التكرارات: '</span>, num2str(iter)]);
+
+<span class="matlab-comment">% التحقق من النتيجة</span>
+f_value = f(root);
+disp([<span class="matlab-string">'قيمة الدالة عند الجذر: '</span>, num2str(f_value)]);</code></pre>
+                </div>
+                
+                <div class="output">
+                    الجذر التقريبي: 0.55383
+                    عدد التكرارات: 4
+                    قيمة الدالة عند الجذر: 2.2204e-16
+                </div>
+            </div>
+        </div>
+        
+        <!-- الصفحة الثالثة: التكامل العددي -->
+        <div id="page3" class="page">
+            <h2><i class="fas fa-integral"></i> التكامل العددي (Numerical Integration)</h2>
+            <p>التكامل العددي هو تقنية تُستخدم لتقريب التكامل المحدد لدالة ما على فترة معينة. يُستخدم التكامل العددي عندما يكون من الصعب أو المستحيل الحصول على حل تحليلي للتكامل.</p>
+            
+            <h3>1. قاعدة شبه المنحرف (Trapezoidal Rule)</h3>
+            <p>تقوم هذه القاعدة على تقريب الدالة بخط مستقيم بين كل نقطتين متجاورتين.</p>
+            
+            <div class="math">
+                \[ \int_a^b f(x) dx \approx \frac{h}{2} [f(a) + 2f(a+h) + 2f(a+2h) + \cdots + 2f(b-h) + f(b)] \]
+            </div>
+            
+            <p>حيث \(h = \frac{b-a}{n}\)، و \(n\) هو عدد الفترات.</p>
+
+            <div class="matlab-code">
+                <div class="code-header">
+                    <span>دالة قاعدة شبه المنحرف في MATLAB</span>
+                    <button class="copy-btn" onclick="copyCode(this)">نسخ الكود</button>
+                </div>
+<pre><code><span class="matlab-keyword">function</span> I = trapezoidal_rule(f, a, b, n)
+<span class="matlab-comment">% قاعدة شبه المنحرف للتكامل العددي</span>
+<span class="matlab-comment">% f: الدالة المراد تكاملها</span>
+<span class="matlab-comment">% a, b: حدود التكامل</span>
+<span class="matlab-comment">% n: عدد الفترات</span>
+
+h = (b - a) / n;
+x = a:h:b;
+y = f(x);
+
+I = (h/2) * (y(1) + 2*sum(y(2:end-1)) + y(end));
+
+<span class="matlab-comment">% حساب الخطأ النظري (للدوال التي يمكن حساب مشتقتها الثانية)</span>
+<span class="matlab-keyword">if</span> nargout > 1
+    <span class="matlab-comment">% هنا يمكن إضافة حساب الخطأ إذا كانت المشتقة الثانية معروفة</span>
+<span class="matlab-keyword">end</span>
+
+<span class="matlab-keyword">end</span></code></pre>
+            </div>
+            
+            <div class="example">
+                <h4>مثال توضيحي:</h4>
+                <p>لحساب \(\int_0^2 \sin(x) dx\) باستخدام قاعدة شبه المنحرف مع \(n=10\):</p>
+                
+                <div class="matlab-code">
+                    <div class="code-header">
+                        <span>تنفيذ المثال في MATLAB</span>
+                        <button class="copy-btn" onclick="copyCode(this)">نسخ الكود</button>
+                    </div>
+<pre><code><span class="matlab-comment">% تعريف الدالة</span>
+f = @(x) sin(x);
+
+<span class="matlab-comment">% تطبيق قاعدة شبه المنحرف</span>
+a = 0;
+b = 2;
+n = 10;
+I_trap = trapezoidal_rule(f, a, b, n);
+
+<span class="matlab-comment">% القيمة الحقيقية للمقارنة</span>
+I_exact = -cos(b) + cos(a);
+
+disp([<span class="matlab-string">'نتيجة قاعدة شبه المنحرف: '</span>, num2str(I_trap)]);
+disp([<span class="matlab-string">'القيمة الحقيقية: '</span>, num2str(I_exact)]);
+disp([<span class="matlab-string">'الخطأ: '</span>, num2str(abs(I_trap - I_exact))]);</code></pre>
+                </div>
+                
+                <div class="output">
+                    نتيجة قاعدة شبه المنحرف: 1.4114
+                    القيمة الحقيقية: 1.4161
+                    الخطأ: 0.0047396
+                </div>
+            </div>
+            
+            <h3>2. قاعدة سيمبسون (Simpson's Rule)</h3>
+            <p>تقوم هذه القاعدة على تقريب الدالة بقطع مكافئ بين كل ثلاث نقاط متتالية.</p>
+            
+            <div class="math">
+                \[ \int_a^b f(x) dx \approx \frac{h}{3} [f(a) + 4f(a+h) + 2f(a+2h) + 4f(a+3h) + \cdots + 4f(b-h) + f(b)] \]
+            </div>
+            
+            <p>حيث \(h = \frac{b-a}{n}\)، و \(n\) يجب أن يكون عددًا زوجيًا.</p>
+
+            <div class="matlab-code">
+                <div class="code-header">
+                    <span>دالة قاعدة سيمبسون في MATLAB</span>
+                    <button class="copy-btn" onclick="copyCode(this)">نسخ الكود</button>
+                </div>
+<pre><code><span class="matlab-keyword">function</span> I = simpsons_rule(f, a, b, n)
+<span class="matlab-comment">% قاعدة سيمبسون للتكامل العددي</span>
+<span class="matlab-comment">% f: الدالة المراد تكاملها</span>
+<span class="matlab-comment">% a, b: حدود التكامل</span>
+<span class="matlab-comment">% n: عدد الفترات (يجب أن يكون زوجيًا)</span>
+
+<span class="matlab-keyword">if</span> mod(n, 2) ~= 0
+    error(<span class="matlab-string">'عدد الفترات n يجب أن يكون زوجيًا'</span>);
+<span class="matlab-keyword">end</span>
+
+h = (b - a) / n;
+x = a:h:b;
+y = f(x);
+
+<span class="matlab-comment">% تطبيق قاعدة سيمبسون</span>
+I = (h/3) * (y(1) + y(end) + 4*sum(y(2:2:end-1)) + 2*sum(y(3:2:end-2)));
+
+<span class="matlab-keyword">end</span></code></pre>
+            </div>
+            
+            <div class="example">
+                <h4>مثال توضيحي:</h4>
+                <p>لحساب \(\int_0^2 \sin(x) dx\) باستخدام قاعدة سيمبسون مع \(n=10\):</p>
+                
+                <div class="matlab-code">
+                    <div class="code-header">
+                        <span>تنفيذ المثال في MATLAB</span>
+                        <button class="copy-btn" onclick="copyCode(this)">نسخ الكود</button>
+                    </div>
+<pre><code><span class="matlab-comment">% تعريف الدالة</span>
+f = @(x) sin(x);
+
+<span class="matlab-comment">% تطبيق قاعدة سيمبسون</span>
+a = 0;
+b = 2;
+n = 10;
+I_simp = simpsons_rule(f, a, b, n);
+
+<span class="matlab-comment">% القيمة الحقيقية للمقارنة</span>
+I_exact = -cos(b) + cos(a);
+
+disp([<span class="matlab-string">'نتيجة قاعدة سيمبسون: '</span>, num2str(I_simp)]);
+disp([<span class="matlab-string">'القيمة الحقيقية: '</span>, num2str(I_exact)]);
+disp([<span class="matlab-string">'الخطأ: '</span>, num2str(abs(I_simp - I_exact))]);</code></pre>
+                </div>
+                
+                <div class="output">
+                    نتيجة قاعدة سيمبسون: 1.4161
+                    القيمة الحقيقية: 1.4161
+                    الخطأ: 4.2397e-06
+                </div>
+            </div>
+            
+            <div class="comparison">
+                <div class="comparison-box">
+                    <h4>مقارنة بين طرق التكامل</h4>
+                    <p><strong>قاعدة شبه المنحرف:</strong></p>
+                    <ul>
+                        <li>بسيطة وسهلة التطبيق</li>
+                        <li>دقتها منخفضة مقارنة بطرق أخرى</li>
+                        <li>مناسبة للدوال الخطية تقريبًا</li>
+                    </ul>
+                    
+                    <p><strong>قاعدة سيمبسون:</strong></p>
+                    <ul>
+                        <li>أكثر دقة من قاعدة شبه المنحرف</li>
+                        <li>تتطلب عددًا زوجيًا من الفترات</li>
+                        <li>مناسبة للدوال السلسة</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>التحليل العددي مع تطبيقات MATLAB &copy; 2023 - تم إعداده بناءً على كتاب "Numerical Analysis I" للمؤلفين: ناصر خليل، هاثم خليل، ليلى جرؤ</p>
+            <p>جميع الأكواد قابلة للتشغيل في بيئة MATLAB</p>
+        </footer>
+    </div>
+
+    <script>
+        // التنقل بين الصفحات
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const pages = document.querySelectorAll('.page');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    
+                    // إزالة النشاط من جميع الألسنة والصفحات
+                    tabs.forEach(t => t.classList.remove('active'));
+                    pages.forEach(p => p.classList.remove('active'));
+                    
+                    // إضافة النشاط للسان والصفحة المحددة
+                    this.classList.add('active');
+                    document.getElementById(target).classList.add('active');
+                });
+            });
+            
+            // تهيئة MathJax
+            if (window.MathJax) {
+                window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub]);
+            }
+        });
+        
+        // دالة نسخ الأكواد
+        function copyCode(button) {
+            const codeElement = button.closest('.matlab-code').querySelector('code');
+            const textArea = document.createElement('textarea');
+            textArea.value = codeElement.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            // تغيير نص الزر مؤقتًا للإشارة إلى النسخ
+            const originalText = button.textContent;
+            button.textContent = 'تم النسخ!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        }
+    </script>
+     <!-- ملف القائمة الجانبية -->
+     <script src="sidebar.js"></script>
+</body>
+</html>
