@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تمارين إضافية - Analyse 3</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --easy: #27ae60;
+            --medium: #f39c12;
+            --hard: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #f9f9f9;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .back-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background: #1a252f;
+        }
+        
+        .difficulty-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .difficulty-easy {
+            background: var(--easy);
+            color: white;
+        }
+        
+        .difficulty-medium {
+            background: var(--medium);
+            color: white;
+        }
+        
+        .difficulty-hard {
+            background: var(--hard);
+            color: white;
+        }
+        
+        .exercise-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .exercise {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-right: 4px solid var(--secondary);
+            transition: transform 0.3s ease;
+        }
+        
+        .exercise:hover {
+            transform: translateX(-5px);
+        }
+        
+        .exercise h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .math {
+            direction: ltr;
+            text-align: left;
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .solution {
+            background: #e8f5e8;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-right: 4px solid var(--success);
+        }
+        
+        details {
+            margin: 10px 0;
+        }
+        
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--secondary);
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        summary:hover {
+            background: #e9ecef;
+        }
+        
+        .exercise-grid {
+            display: grid;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .exercise-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>تمارين إضافية - Analyse 3</h1>
+            <p class="subtitle">20 تمرين متنوع ومتدرج في الصعوبة مع الحلول المفصلة</p>
+        </header>
+        
+        <a href="index.html" class="back-button">← العودة للصفحة السابقة</a>
+
+        <!-- تمارين الفصل الأول - 10 تمارين -->
+        <div class="exercise-section">
+            <h2>📚 تمارين Chapter 1: تقارب المتسلسلات العددية (10 تمارين)</h2>
+            
+            <div class="exercise-grid">
+                <!-- تمرين 1 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-easy">سهل</span>
+                        تمرين 1: اختبار النهايات
+                    </h4>
+                    <p>ادرس تقارب المتسلسلة: \( \sum_{n=1}^{\infty} \frac{n^2 + 1}{2n^3 + 3n + 1} \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>باستخدام اختبار النهايات:</p>
+                            <div class="math">
+                                \[ \lim_{n \to \infty} \frac{n^2 + 1}{2n^3 + 3n + 1} = 0 \]
+                            </div>
+                            <p>الاختبار غير حاسم، نستخدم اختبار المقارنة:</p>
+                            <div class="math">
+                                \[ \frac{n^2 + 1}{2n^3 + 3n + 1} \sim \frac{1}{2n} \]
+                            </div>
+                            <p>بما أن \( \sum \frac{1}{n} \) متباعدة، فإن المتسلسلة <strong>متباعدة</strong>.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 2 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-easy">سهل</span>
+                        تمرين 2: اختبار داليمبير
+                    </h4>
+                    <p>ادرس تقارب المتسلسلة: \( \sum_{n=1}^{\infty} \frac{3^n n!}{n^n} \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>باستخدام اختبار داليمبير:</p>
+                            <div class="math">
+                                \[ \frac{a_{n+1}}{a_n} = \frac{3^{n+1}(n+1)!}{(n+1)^{n+1}} \cdot \frac{n^n}{3^n n!} = 3 \left( \frac{n}{n+1} \right)^n \]
+                            </div>
+                            <div class="math">
+                                \[ \lim_{n \to \infty} \frac{a_{n+1}}{a_n} = \frac{3}{e} > 1 \]
+                            </div>
+                            <p>إذن المتسلسلة <strong>متباعدة</strong>.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 3 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-easy">سهل</span>
+                        تمرين 3: اختبار كوشي
+                    </h4>
+                    <p>ادرس تقارب المتسلسلة: \( \sum_{n=1}^{\infty} \left( \frac{2n + 1}{3n + 2} \right)^n \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>باستخدام اختبار كوشي:</p>
+                            <div class="math">
+                                \[ \sqrt[n]{a_n} = \frac{2n + 1}{3n + 2} \]
+                            </div>
+                            <div class="math">
+                                \[ \lim_{n \to \infty} \sqrt[n]{a_n} = \frac{2}{3} < 1 \]
+                            </div>
+                            <p>إذن المتسلسلة <strong>متقاربة</strong>.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 4 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-medium">متوسط</span>
+                        تمرين 4: اختبار التكامل
+                    </h4>
+                    <p>ادرس تقارب المتسلسلة: \( \sum_{n=1}^{\infty} \frac{1}{n \ln n} \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>باستخدام اختبار التكامل:</p>
+                            <div class="math">
+                                \[ \int_2^\infty \frac{1}{x \ln x} dx = \lim_{b \to \infty} \ln(\ln x) \Big|_2^b = \infty \]
+                            </div>
+                            <p>بما أن التكامل متباعد، فإن المتسلسلة <strong>متباعدة</strong>.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 5 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-medium">متوسط</span>
+                        تمرين 5: اختبار المقارنة
+                    </h4>
+                    <p>ادرس تقارب المتسلسلة: \( \sum_{n=1}^{\infty} \frac{\sqrt{n}}{n^2 + 1} \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>باستخدام اختبار المقارنة:</p>
+                            <div class="math">
+                                \[ \frac{\sqrt{n}}{n^2 + 1} \sim \frac{1}{n^{3/2}} \]
+                            </div>
+                            <p>بما أن \( \sum \frac{1}{n^{3/2}} \) متقاربة (p-series مع p = 1.5 > 1)، فإن المتسلسلة <strong>متقاربة</strong>.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 6 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-medium">متوسط</span>
+                        تمرين 6: متسلسلة متناوبة
+                    </h4>
+                    <p>ادرس تقارب المتسلسلة: \( \sum_{n=1}^{\infty} \frac{(-1)^n}{\sqrt{n}} \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>باستخدام اختبار لايبنتز:</p>
+                            <ul>
+                                <li>\( a_n = \frac{1}{\sqrt{n}} > 0 \)</li>
+                                <li>\( a_{n+1} \leq a_n \) (متناقصة)</li>
+                                <li>\( \lim_{n \to \infty} \frac{1}{\sqrt{n}} = 0 \)</li>
+                            </ul>
+                            <p>إذن المتسلسلة <strong>متقاربة</strong> (شرطياً).</p>
+                            <p>ولكن \( \sum \left| \frac{(-1)^n}{\sqrt{n}} \right| = \sum \frac{1}{\sqrt{n}} \) متباعدة.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 7 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-medium">متوسط</span>
+                        تمرين 7: اختبار النسبة المتقدم
+                    </h4>
+                    <p>ادرس تقارب المتسلسلة: \( \sum_{n=1}^{\infty} \frac{n!}{n^n} \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>باستخدام اختبار داليمبير:</p>
+                            <div class="math">
+                                \[ \frac{a_{n+1}}{a_n} = \frac{(n+1)!}{(n+1)^{n+1}} \cdot \frac{n^n}{n!} = \left( \frac{n}{n+1} \right)^n \]
+                            </div>
+                            <div class="math">
+                                \[ \lim_{n \to \infty} \frac{a_{n+1}}{a_n} = \frac{1}{e} < 1 \]
+                            </div>
+                            <p>إذن المتسلسلة <strong>متقاربة</strong>.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 8 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-hard">صعب</span>
+                        تمرين 8: متسلسلة معقدة
+                    </h4>
+                    <p>ادرس تقارب المتسلسلة: \( \sum_{n=1}^{\infty} \frac{\ln n}{n^2} \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>باستخدام اختبار المقارنة بالنهاية مع \( \frac{1}{n^{1.5}} \):</p>
+                            <div class="math">
+                                \[ \lim_{n \to \infty} \frac{\frac{\ln n}{n^2}}{\frac{1}{n^{1.5}}} = \lim_{n \to \infty} \frac{\ln n}{n^{0.5}} = 0 \]
+                            </div>
+                            <p>بما أن \( \sum \frac{1}{n^{1.5}} \) متقاربة والنهاية = 0، فإن المتسلسلة <strong>متقاربة</strong>.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 9 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-hard">صعب</span>
+                        تمرين 9: اختبار كوشي المتقدم
+                    </h4>
+                    <p>ادرس تقارب المتسلسلة: \( \sum_{n=1}^{\infty} \left( 1 + \frac{1}{n} \right)^{-n^2} \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>باستخدام اختبار كوشي:</p>
+                            <div class="math">
+                                \[ \sqrt[n]{a_n} = \left( 1 + \frac{1}{n} \right)^{-n} \]
+                            </div>
+                            <div class="math">
+                                \[ \lim_{n \to \infty} \sqrt[n]{a_n} = \frac{1}{e} < 1 \]
+                            </div>
+                            <p>إذن المتسلسلة <strong>متقاربة</strong>.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 10 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-hard">صعب</span>
+                        تمرين 10: تطبيقات نظرية ريمان
+                    </h4>
+                    <p>أعط مثالاً على متسلسلة متقاربة شرطياً يمكن إعادة ترتيبها لتتباعد.</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>المتسلسلة التوافقية المتناوبة:</p>
+                            <div class="math">
+                                \[ \sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n} = 1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \cdots \]
+                            </div>
+                            <p>هذه المتسلسلة متقاربة شرطياً. يمكن إعادة ترتيبها كالتالي:</p>
+                            <div class="math">
+                                \[ 1 + \frac{1}{3} - \frac{1}{2} + \frac{1}{5} + \frac{1}{7} - \frac{1}{4} + \cdots \]
+                            </div>
+                            <p>هذا الترتيب يمكن أن يجعل المتسلسلة تتباعد أو تتقارب لأي مجموع نريده.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <!-- تمارين الفصل الثاني - 10 تمارين -->
+        <div class="exercise-section">
+            <h2>📊 تمارين Chapter 2: متتاليات ومتسلسلات الدوال (10 تمارين)</h2>
+            
+            <div class="exercise-grid">
+                <!-- تمرين 11 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-easy">سهل</span>
+                        تمرين 11: التقارب المنتظم
+                    </h4>
+                    <p>ادرس التقارب المنتظم للمتتالية: \( f_n(x) = \frac{x}{1 + nx^2} \) على \( \mathbb{R} \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>الخطوة 1: النهاية النقطية</p>
+                            <div class="math">
+                                \[ \lim_{n \to \infty} f_n(x) = 0 \quad \forall x \in \mathbb{R} \]
+                            </div>
+                            <p>الخطوة 2: دراسة التقارب المنتظم</p>
+                            <div class="math">
+                                \[ \sup_{x \in \mathbb{R}} |f_n(x)| = \frac{1}{2\sqrt{n}} \to 0 \]
+                            </div>
+                            <p>إذن المتتالية <strong>تتقارب منتظماً</strong> على \( \mathbb{R} \).</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 12 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-easy">سهل</span>
+                        تمرين 12: متسلسلة دوال
+                    </h4>
+                    <p>ادرس تقارب المتسلسلة: \( \sum_{n=1}^{\infty} \frac{\sin(nx)}{n^2} \) على \( \mathbb{R} \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>باستخدام اختبار فايرشتراس:</p>
+                            <div class="math">
+                                \[ \left| \frac{\sin(nx)}{n^2} \right| \leq \frac{1}{n^2} \]
+                            </div>
+                            <p>بما أن \( \sum \frac{1}{n^2} \) متقاربة، فإن المتسلسلة:</p>
+                            <ul>
+                                <li>تتقارب طبيعياً على \( \mathbb{R} \)</li>
+                                <li>تتقارب منتظماً على \( \mathbb{R} \)</li>
+                                <li>تتقارب مطلقاً على \( \mathbb{R} \)</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 13 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-medium">متوسط</span>
+                        تمرين 13: تقارب النقطة
+                    </h4>
+                    <p>ادرس تقارب المتتالية: \( f_n(x) = x^n \) على \( [0,1] \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>النهاية النقطية:</p>
+                            <div class="math">
+                                \[ \lim_{n \to \infty} f_n(x) = \begin{cases}
+                                0 & \text{if } 0 \leq x < 1 \\
+                                1 & \text{if } x = 1
+                                \end{cases} \]
+                            </div>
+                            <p>التقارب المنتظم:</p>
+                            <div class="math">
+                                \[ \sup_{x \in [0,1]} |x^n - f(x)| = 1 \nrightarrow 0 \]
+                            </div>
+                            <p>إذن التقارب <strong>نقطي وليس منتظماً</strong>.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 14 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-medium">متوسط</span>
+                        تمرين 14: نظرية التكامل
+                    </h4>
+                    <p>احسب: \( \lim_{n \to \infty} \int_0^1 \frac{nx}{1 + n^2x^4} dx \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>الخطوة 1: دراسة التقارب المنتظم</p>
+                            <div class="math">
+                                \[ \sup_{x \in [0,1]} \left| \frac{nx}{1 + n^2x^4} \right| = \frac{1}{2} \nrightarrow 0 \]
+                            </div>
+                            <p>التقارب ليس منتظماً، نستخدم التكامل المباشر:</p>
+                            <div class="math">
+                                \[ \int_0^1 \frac{nx}{1 + n^2x^4} dx = \frac{1}{2} \arctan(n) \to \frac{\pi}{4} \]
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 15 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-medium">متوسط</span>
+                        تمرين 15: اختبار فايرشتراس
+                    </h4>
+                    <p>ادرس تقارب المتسلسلة: \( \sum_{n=1}^{\infty} \frac{\cos(nx)}{n^2 + x^2} \) على \( \mathbb{R} \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>باستخدام اختبار فايرشتراس:</p>
+                            <div class="math">
+                                \[ \left| \frac{\cos(nx)}{n^2 + x^2} \right| \leq \frac{1}{n^2} \]
+                            </div>
+                            <p>بما أن \( \sum \frac{1}{n^2} \) متقاربة، فإن المتسلسلة <strong>تتقارب طبيعياً ومنتظماً</strong> على \( \mathbb{R} \).</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 16 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-hard">صعب</span>
+                        تمرين 16: نظرية الاشتقاق
+                    </h4>
+                    <p>لتكن \( f_n(x) = \frac{\sin(nx)}{n} \). هل يمكن تبادل النهاية والاشتقاق؟</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>النهاية النقطية: \( f_n(x) \to 0 \)</p>
+                            <p>المشتقات: \( f'_n(x) = \cos(nx) \)</p>
+                            <p>متتالية المشتقات <strong>لا تتقارب</strong>، لذلك <strong>لا يمكن</strong> تبادل النهاية والاشتقاق.</p>
+                            <div class="math">
+                                \[ \left( \lim_{n \to \infty} f_n(x) \right)' = 0 \neq \lim_{n \to \infty} f'_n(x) \]
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 17 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-hard">صعب</span>
+                        تمرين 17: تقارب على فترات جزئية
+                    </h4>
+                    <p>ادرس تقارب المتتالية \( f_n(x) = x^n \) على \( [0,a] \) حيث \( 0 < a < 1 \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>النهاية النقطية: \( f_n(x) \to 0 \)</p>
+                            <p>التقارب المنتظم:</p>
+                            <div class="math">
+                                \[ \sup_{x \in [0,a]} |x^n| = a^n \to 0 \]
+                            </div>
+                            <p>إذن المتتالية <strong>تتقارب منتظماً</strong> على \( [0,a] \) لكل \( 0 < a < 1 \).</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 18 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-hard">صعب</span>
+                        تمرين 18: متسلسلة قوى
+                    </h4>
+                    <p>أوجد نصف قطر تقارب المتسلسلة: \( \sum_{n=1}^{\infty} \frac{x^n}{n!} \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>باستخدام اختبار النسبة:</p>
+                            <div class="math">
+                                \[ \lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| = \lim_{n \to \infty} \frac{n!}{(n+1)!} |x| = \lim_{n \to \infty} \frac{|x|}{n+1} = 0 \]
+                            </div>
+                            <p>بما أن النهاية = 0 < 1 لكل x، فإن <strong>نصف قطر التقارب = ∞</strong>.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 19 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-hard">صعب</span>
+                        تمرين 19: نظرية ديني
+                    </h4>
+                    <p>طبق نظرية ديني على المتتالية \( f_n(x) = 1 - x^n \) على \( [0, \frac{1}{2}] \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>شروط نظرية ديني:</p>
+                            <ul>
+                                <li>كل \( f_n \) مستمرة ✓</li>
+                                <li>\( f_n \to 1 \) نقطياً و 1 مستمرة ✓</li>
+                                <li>المتتالية رتيبة متناقصة ✓</li>
+                            </ul>
+                            <p>إذن المتتالية <strong>تتقارب منتظماً</strong> على \( [0, \frac{1}{2}] \).</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- تمرين 20 -->
+                <div class="exercise">
+                    <h4>
+                        <span class="difficulty-badge difficulty-hard">صعب</span>
+                        تمرين 20: تطبيق شامل
+                    </h4>
+                    <p>ادرس تقارب المتسلسلة: \( \sum_{n=1}^{\infty} \frac{nx}{1 + n^3x^2} \) على \( [0,1] \)</p>
+                    <details>
+                        <summary>عرض الحل</summary>
+                        <div class="solution">
+                            <p>النهاية النقطية: \( f_n(x) \to 0 \)</p>
+                            <p>لدراسة التقارب المنتظم، نجد القيمة العظمى:</p>
+                            <div class="math">
+                                \[ \sup_{x \in [0,1]} \left| \frac{nx}{1 + n^3x^2} \right| = \frac{1}{2n} \to 0 \]
+                            </div>
+                            <p>إذن المتسلسلة <strong>تتقارب منتظماً</strong> على \( [0,1] \).</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+        
+        <footer style="text-align: center; margin-top: 40px; padding: 20px; color: #7f8c8d;">
+            <p>تمارين Analyse 3 &copy; 2025 - 20 تمرين متنوع</p>
+            <p>تم الإنشاء بواسطة الطالب تريعة فارس ناصر الإسلام و الطالبة إيمان حسان</p>
+        </footer>
+    </div>
+</body>
+</html>
